@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
+
+import java.security.Principal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,6 +20,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import com.example.demo.answer.AnswerForm;
+import com.example.demo.user.SiteUser;
+import com.example.demo.user.UserService;
 
 
 @RequestMapping("/question") //prefix
@@ -25,6 +30,7 @@ import com.example.demo.answer.AnswerForm;
 public class QuestionController {
     
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
@@ -46,13 +52,15 @@ public class QuestionController {
     }
 
     @PostMapping("/create") //POST 방식으로 데이터를 받음
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 
         if (bindingResult.hasErrors()){
             return "question_form";
         }
 
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
         return "redirect:/question/list";
     }
    
