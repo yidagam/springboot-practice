@@ -1,31 +1,45 @@
 package com.example.demo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+// import java.util.List;
+// import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+// import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.answer.Answer;
+// import com.example.demo.answer.Answer;
 // import com.example.demo.answer.AnswerRepository;
-import com.example.demo.question.Question;
-import com.example.demo.question.QuestionRepository;
+// import com.example.demo.question.Question;
+// import com.example.demo.question.QuestionRepository;
+import com.example.demo.question.QuestionService;
 
 @SpringBootTest
 class DemoApplicationTests {
 
+	// @Autowired
+	// private QuestionRepository questionRepository;
+
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionService questionService;
 
 	// @Autowired
 	// private AnswerRepository answerRepository;
 
+	@Test
+	void testJpa() {
+		for (int i = 1; i<=300; i++){
+			String subject = String.format("테스트 데이터입니다.: [%03d]", i);
+			String content = "내용 무";
+			this.questionService.create(subject, content);
+		}
+	}
+
+	/*
 	@Transactional
 	@Test
 	void testJpa() {
@@ -38,7 +52,6 @@ class DemoApplicationTests {
 		assertEquals(1, answerList.size());
 		assertEquals("네. 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
-
 
 	/*
     @Test

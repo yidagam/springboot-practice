@@ -1,16 +1,19 @@
 package com.example.demo.question;
 
-import java.util.List;
+// import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import jakarta.validation.Valid;
+// import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import com.example.demo.answer.AnswerForm;
@@ -24,9 +27,9 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/list")
-    public String list(Model model) {
-        List<Question> questionList = this.questionService.getList();
-        model.addAttribute("questionList", questionList);
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
 
@@ -37,12 +40,12 @@ public class QuestionController {
         return "question_detail";
     }
     
-    @GetMapping("/create")
+    @GetMapping("/create") //GET 방식으로 데이터를 받음
     public String questionCreate(QuestionForm questionForm) {
         return "question_form";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create") //POST 방식으로 데이터를 받음
     public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()){
