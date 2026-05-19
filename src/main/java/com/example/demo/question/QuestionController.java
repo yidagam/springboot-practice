@@ -15,6 +15,7 @@ import java.security.Principal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,11 +47,13 @@ public class QuestionController {
         return "question_detail";
     }
     
+    @PreAuthorize("isAuthenticated()") //인증된 사용자만 호출
     @GetMapping("/create") //GET 방식으로 데이터를 받음
     public String questionCreate(QuestionForm questionForm) {
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()") //인증된 사용자만 호출
     @PostMapping("/create") //POST 방식으로 데이터를 받음
     public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 

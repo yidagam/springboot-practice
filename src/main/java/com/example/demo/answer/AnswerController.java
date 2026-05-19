@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import java.security.Principal;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class AnswerController{
     private final AnswerService answerService;
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()") //인증된 사용자만 호출
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
 
