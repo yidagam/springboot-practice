@@ -1,14 +1,14 @@
 package com.example.demo.answer;
 
-import java.security.Principal;
+// import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+// import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.PathVariable;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +48,11 @@ public class AnswerService {
 
     public void delete(Answer answer) {
         this.answerRepository.delete(answer);
+    }
+
+    public void vote(Answer answer, SiteUser siteUser){
+        answer.getVoter().add(siteUser);
+        this.answerRepository.save(answer);
     }
 
 }
